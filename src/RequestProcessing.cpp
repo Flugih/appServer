@@ -55,7 +55,7 @@ void RequestProcessing::createID() {
                 ID += "-";
             }
         }
-        exit ? db.checkValidateID(ID, acceptedData) : db.checkValidateID(ID, acceptedData);
+        exit = db.checkValidateID(ID, acceptedData);
     }
 }
 

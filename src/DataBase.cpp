@@ -3,6 +3,8 @@
 DataBase::DataBase()
 {
     DB = nullptr;
+    connectDB();
+    createDB();
 }
 
 DataBase::~DataBase() {
@@ -80,15 +82,16 @@ void DataBase::connect() {
 }
 
 int DataBase::checkValidateID(string ID, map<string, string> acceptedData) { // if ID is validate, call "addUser" func
-    connectDB();
+    //connectDB();
     //createDB();
     cout << ID << endl;
-    if (checkID(ID) == 1) { // 1 = user isnt in database, 0 = user in database
+    if (checkID(ID)) { // 1 = user isnt in database, 0 = user in database
         addUser(ID, acceptedData);
         SD.sendUserID(ID);
-        return 0;
+        //closeDB();
+        return 1;
     }
     //addUser(ID, acceptedData);
-    closeDB();
-    return 1;
+    //closeDB();
+    return 0;
 }

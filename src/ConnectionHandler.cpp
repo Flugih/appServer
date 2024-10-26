@@ -1,5 +1,7 @@
 #include "../include/ConnectionHandler.h"
 
+SOCKET clientSocket = INVALID_SOCKET;
+
 void ConnectionHandler::queueHandler() {
     //DataBase db;
     srand((unsigned)time(NULL));
@@ -12,6 +14,7 @@ void ConnectionHandler::queueHandler() {
         unique_lock<mutex> lock(mtx);
         usQu::iterator it = connectionQueue.begin();
         while (it != connectionQueue.end()) {
+            clientSocket = it->clientSocket;
             string deserializedRequest = deserialize.hexToString(it->request);
             //cout << deserializedRequest << endl;
             string answer = reqProc.distribution(deserializedRequest);
@@ -21,7 +24,7 @@ void ConnectionHandler::queueHandler() {
             //	}*/
             //	// send answer to client with class SendingData
             //}
-            it = connectionQueue.erase(it); // Удаляем текущий элемент и получаем новый итератор
+            it = connectionQueue.erase(it);
         }
         lock.unlock();
     }

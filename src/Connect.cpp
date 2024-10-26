@@ -49,6 +49,7 @@ void Connect::startServer()
 		// thread(&ConnectionHandler::distribution, &CH).detach();
 		while (true) {
 			if ((clientSocket = accept(listenSocket, NULL, NULL)) != INVALID_SOCKET) {
+				system("cls");
 				cout << "Client has connected" << endl;
 				memset(recvBuffer, 0, 512);
 				if (recv(clientSocket, recvBuffer, 512, 0) > 0) {

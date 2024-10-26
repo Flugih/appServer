@@ -24,7 +24,6 @@ private:
 	Serialization deserialize;
 
 	mutex mtx;
-	SOCKET clientSocket = INVALID_SOCKET;
 
 	void queueHandler();
 
