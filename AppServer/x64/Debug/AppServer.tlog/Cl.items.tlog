@@ -1,0 +1,9 @@
+C:\Users\newol\source\repos\AppServer\AppServer\src\AppServer.cpp;C:\Users\newol\source\repos\AppServer\AppServer\x64\Debug\AppServer.obj
+C:\Users\newol\source\repos\AppServer\AppServer\src\AutoUpdate.cpp;C:\Users\newol\source\repos\AppServer\AppServer\x64\Debug\AutoUpdate.obj
+C:\Users\newol\source\repos\AppServer\AppServer\src\Connect.cpp;C:\Users\newol\source\repos\AppServer\AppServer\x64\Debug\Connect.obj
+C:\Users\newol\source\repos\AppServer\AppServer\src\ConnectionHandler.cpp;C:\Users\newol\source\repos\AppServer\AppServer\x64\Debug\ConnectionHandler.obj
+C:\Users\newol\source\repos\AppServer\AppServer\src\DataBase.cpp;C:\Users\newol\source\repos\AppServer\AppServer\x64\Debug\DataBase.obj
+C:\Users\newol\source\repos\AppServer\AppServer\src\RequestProcessing.cpp;C:\Users\newol\source\repos\AppServer\AppServer\x64\Debug\RequestProcessing.obj
+C:\Users\newol\source\repos\AppServer\AppServer\src\SendingData.cpp;C:\Users\newol\source\repos\AppServer\AppServer\x64\Debug\SendingData.obj
+C:\Users\newol\source\repos\AppServer\AppServer\src\Serialization.cpp;C:\Users\newol\source\repos\AppServer\AppServer\x64\Debug\Serialization.obj
+C:\Users\newol\source\repos\AppServer\AppServer\src\usersQueue.cpp;C:\Users\newol\source\repos\AppServer\AppServer\x64\Debug\usersQueue.obj
