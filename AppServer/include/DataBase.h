@@ -1,20 +1,15 @@
 #ifndef DATABASE_H
 #define DATABASE_H
 
-#include <iostream>
+#include <sqlite3.h>
 #include <string>
 #include <map>
-#include "sqlite3.h"
-#include "SendingData.h"
 
 using namespace std;
 
 class DataBase {
 private:
-    SendingData SD;
-    sqlite3* DB = nullptr;
-
-    // sqlite3* DB = nullptr;
+    sqlite3* DB;
 
     int callback(void* data, int argc, char** argv, char** azColName);
     void closeDB();
@@ -26,7 +21,7 @@ private:
 public:
     DataBase();
     ~DataBase();
-    void connect();
+    //void connect();
     int checkValidateID(string ID, map<string, string> acceptedData);
 };
 

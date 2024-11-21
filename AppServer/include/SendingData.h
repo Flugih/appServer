@@ -2,19 +2,17 @@
 #define SENDINGDATA_H
 
 #include <string>
-#include <WinSock2.h>
+#include <map>
 
 using namespace std;
 
-class ConnectionHandler;
-
 class SendingData {
 private:
-    ConnectionHandler* CH;
-
+    map<string, string> responseData = {
+        {"userID", "unknown"}, {"serverTime", "unknown"}, {"serverVersion", "0.1"}, {"response", "null"}
+    };
 public:
-    // SendingData(ConnectionHandler* ch); 
-    void sendUserID(string ID);
+    void sendResponse(string ID, string reponse);
 };
 
 #endif 

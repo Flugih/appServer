@@ -1,55 +1,36 @@
 #include "../include/RequestProcessing.h"
+#include "../include/DataBase.h"
+#include "../include/AutoUpdate.h"
+#include "../include/Serialization.h"
+
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+
+DataBase db;
+Serialization ser;
 
 RequestProcessing::RequestProcessing() : actualVersion("1.0.0") {
 }
 
-void RequestProcessing::stringToMap(string separatedString) {
-    string key = separatedString.substr(0, separatedString.find(":")), meaning = separatedString.substr(separatedString.find(":") + 1, separatedString.back());
-
-    acceptedData[key] = meaning;
-}
-
-void RequestProcessing::separationRequestData(string recvRequest) {
-    string separatedString;
-    cout << "separationRequestData" << endl;
-
-    if (!recvRequest.empty()) {
-        while (true) {
-            if (!recvRequest.empty()) {
-                for (size_t i = recvRequest.find("{") + 1; i < recvRequest.find("}"); i++) {
-                    separatedString += recvRequest[i];
-                }
-                recvRequest.erase(recvRequest.find("{"), recvRequest.find("}") + 1);
-                stringToMap(separatedString);
-                separatedString.clear();
-            }
-            else {
-                break;
-            }
-        }
-    }
-}
-
-void RequestProcessing::checkID() {
+void RequestProcessing::checkID(map<string, string> acceptedData) {
+    // map<string, string> acceptedData = ser.
     if (acceptedData["userID"] == "unknown" || acceptedData["userID"] == "") {
         cout << "ID is unknown" << endl;
-        createID();
+        createID(acceptedData);
     }
 }
 
-void RequestProcessing::createID() {
+void RequestProcessing::createID(map<string, string> acceptedData) {
     cout << "Create id" << endl;
 
     string ID = "";
     bool exit = false;
     while (!exit) {
         ID = "";
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
+        for (uint32_t i = 0; i < 5; i++) {
+            for (uint32_t j = 0; j < 4; j++) {
                 ID += char(rand() % (90 - 65 + 1) + 65);
-            }
-            if (i < 3) {       
-                ID += "-";
             }
         }
        exit = db.checkValidateID(ID, acceptedData);
@@ -59,21 +40,21 @@ void RequestProcessing::createID() {
         acceptedData["userID"] = ID;
 }
 
-string RequestProcessing::dataRequest() {
+string RequestProcessing::dataRequest(map<string, string> acceptedData) {
     cout << "dataRequest" << endl;
-    checkID();
+    checkID(acceptedData);
     return "";
 }
 
-void RequestProcessing::acceptData() {
+void RequestProcessing::acceptData(map<string, string> acceptedData) {
     cout << "acceptData" << endl;
-    checkID();
+    checkID(acceptedData);
 }
 
 string RequestProcessing::distribution(string recvRequest) {
     AutoUpdate AU;
     cout << "distribution" << endl;
-    separationRequestData(recvRequest);
+    map<string, string> acceptedData = ser.resqustStringToMap(recvRequest);
 
     if (acceptedData["appVersion"] != actualVersion) {
         AU.updateClient();
@@ -81,11 +62,11 @@ string RequestProcessing::distribution(string recvRequest) {
     }
 
     if (acceptedData["requestType"] == "data") {
-        acceptData();
+        acceptData(acceptedData);
         return "accepted"; // server successfull accepted sended data
     }
     else if (acceptedData["requestType"] == "request") {
-        return dataRequest(); // send data from dataRequest()
+        return dataRequest(acceptedData); // send data from dataRequest()
     }
 
     return ""; // Default return value

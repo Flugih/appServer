@@ -1,27 +1,49 @@
 #include "../include/Connect.h"
+#include "../include/ConnectionHandler.h"
+//#include "../include/DataBase.h"
+
+#include <windows.h>
+#include <iostream>
+#include <string>
+#include <thread>
+
+#define WIN32_LEAN_AND_MEAN
+#pragma comment(lib, "WS2_32.lib")
+#define _WINSOCK_DEPRECATED_NO_WARNINGS
+#define _CRT_SECURE_NO_WARNINGS
+
+ConnectionHandler CH;
+//DataBase DB;
+
+SOCKET listenSocket = INVALID_SOCKET;
+
+const char* PORT = "5461";
+
+//Connect::Connect() {
+//	
+//}
 
 void Connect::startServer()
 {
+	//DB.connect();
+	thread(&ConnectionHandler::queueHandler, &CH).detach();
+
 	WSADATA wsaData;
 	ADDRINFO hints;
 	ADDRINFO* addrResult = NULL;
 	SOCKET clientSocket = INVALID_SOCKET;
-	SOCKET listenSocket = INVALID_SOCKET;
-	char recvBuffer[512];
-			
-	CH.startQueueHandler();
-	
+
 	ZeroMemory(&hints, sizeof(hints));
 	hints.ai_family = AF_INET;
 	hints.ai_socktype = SOCK_STREAM;
 	hints.ai_protocol = IPPROTO_TCP;
 	hints.ai_flags = AI_PASSIVE;
-	
-	if (WSAStartup(MAKEWORD(2, 2), &wsaData) == 1) {
+
+	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
 		cout << "(!) WSAStartup error\n";
 		WSACleanup();
 	}
-	else if (getaddrinfo(NULL, "5461", &hints, &addrResult) == 1) { // here is the IP address and the port on which the server will work
+	else if (getaddrinfo(NULL, PORT, &hints, &addrResult) != 0) { // here is the IP address and the port on which the server will work
 		cout << "(!) getaddrinfo error\n";
 		WSACleanup();
 		freeaddrinfo(addrResult);
@@ -45,25 +67,15 @@ void Connect::startServer()
 		closesocket(listenSocket);
 	}
 	else {
-		while (true) {
-			if ((clientSocket = accept(listenSocket, NULL, NULL)) != INVALID_SOCKET) {
-				system("cls");
-				cout << "Client has connected" << endl;
-				memset(recvBuffer, 0, 512);
-				if (recv(clientSocket, recvBuffer, 512, 0) > 0) {
-					string request = recvBuffer;
-	
-					CH.addUserToQueue(request, clientSocket);
-				}
-			}
-			else {
-				cout << "(!) accept error\n";
-			}
-		}
+		CH.incomingConnections();
 	}
-	
+
 	freeaddrinfo(addrResult);
 	closesocket(listenSocket);
 	WSACleanup();
+}
+
+SOCKET Connect::getListenSocket(){
+	return listenSocket;
 }
 

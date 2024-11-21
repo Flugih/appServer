@@ -1,41 +1,28 @@
 #include "../include/Connect.h"
+#include "../include/SendingData.h"
+#include "../include/ResponseProcessing.h"
+#include "../include/ClientInfo.h"
+#include "../include/Serialization.h"
+
+SendingData SD;
+ResponseProcessing RP;
+
+SOCKET connectSocket = INVALID_SOCKET;
+
+const char* PORT = "5461";
+const char* ADDRESS = "localhost";
 
 void Connect::tryAgain() {
 	Sleep(5000);
 	client();
 }
 
-void Connect::sendInfo() const {
-	Serialization serialization;
-	ClientInfo clin;
-	clin.getUserInfo();
-
-	map<string, string> Info;
-
-	for (clientData::iterator it = clInfo.begin(); it != clInfo.end(); ++it) {
-		Info["requestType"] = "data";  // data or request
-		Info["userID"] = it->userID;
-		Info["OSversion"] = it->OSversion;
-		Info["region"] = it->region;
-		Info["appVersion"] = it->appVersion;
-	}
-
-	// serialization.Info = Info;
-	string serizlizedInfo = serialization.serialize(Info);
-	Info.clear();
-	cout << serizlizedInfo << endl;
-
-	send(connectSocket, serizlizedInfo.c_str(), (int)serizlizedInfo.size(), 0);
-}
-
 void Connect::client() {
+
 	WSADATA wsaData;
 	ADDRINFO hints;
 	ADDRINFO* addrResult = NULL;
 	SOCKET clientSocket = INVALID_SOCKET;
-	// string command;
-
-	char recvBuffer[512];
 
 	ZeroMemory(&hints, sizeof(hints));
 	hints.ai_family = AF_INET;
@@ -47,7 +34,7 @@ void Connect::client() {
 		WSACleanup();
 		tryAgain();
 	}
-	else if (getaddrinfo("localhost", "5461", &hints, &addrResult) == 1) {
+	else if (getaddrinfo(ADDRESS, PORT, &hints, &addrResult) == 1) {
 		cout << "(!) getaddrinfo error\n";
 		WSACleanup();
 		freeaddrinfo(addrResult);
@@ -69,18 +56,17 @@ void Connect::client() {
 	}
 	else {
 		cout << "(!) successful connect :)" << endl;
-		sendInfo();
+		SD.sendSystemInfo();
 
 		while (true) {
-			memset(recvBuffer, 0, 512);
-			if (recv(connectSocket, recvBuffer, 512, 0) > 0) {
-				cout << recvBuffer;
-			}
-			Sleep(1000);
 		}
 	}
+
+	WSACleanup();
+	freeaddrinfo(addrResult);
+	closesocket(connectSocket);
 }
 
-SOCKET Connect::getSocket() {
+SOCKET Connect::getSocket() const {
 	return connectSocket;
 }

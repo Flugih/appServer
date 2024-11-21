@@ -131,12 +131,16 @@
     <ClCompile Include="src\ClientInfo.cpp" />
     <ClCompile Include="src\ClientInfoBlock.cpp" />
     <ClCompile Include="src\Connect.cpp" />
+    <ClCompile Include="src\ResponseProcessing.cpp" />
+    <ClCompile Include="src\sendingData.cpp" />
     <ClCompile Include="src\Serialization.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\ClientInfo.h" />
     <ClInclude Include="include\ClientInfoBlock.h" />
     <ClInclude Include="include\Connect.h" />
+    <ClInclude Include="include\ResponseProcessing.h" />
+    <ClInclude Include="include\sendingData.h" />
     <ClInclude Include="include\serialization.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

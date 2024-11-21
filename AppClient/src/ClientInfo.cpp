@@ -1,4 +1,5 @@
 #include "../include/ClientInfo.h"
+#include "../include/ClientInfoBlock.h"
 
 void ClientInfo::collectUserInfo(){
 	getOSversion();
@@ -17,7 +18,6 @@ void ClientInfo::getOSversion(){
 				ostringstream oss;
 				oss << osvi.dwMajorVersion << "." << osvi.dwMinorVersion;
 				OSversion = oss.str();
-
 			}
 		}
 	}
@@ -29,7 +29,6 @@ void ClientInfo::getRegion(){
 	wchar_t localeName[LOCALE_NAME_MAX_LENGTH] = { 0 };
 	int ret = GetUserDefaultLocaleName(localeName, LOCALE_NAME_MAX_LENGTH);
 	if (ret != 0) {
-
 		wchar_t wxCountry[COUNTRY_NAME_MAX_LEN];
 		if (GetLocaleInfoEx(localeName, LOCALE_SENGLISHCOUNTRYNAME, wxCountry, COUNTRY_NAME_MAX_LEN)) {
 			wstring_convert<codecvt_utf8<wchar_t>> converter;

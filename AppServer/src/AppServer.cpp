@@ -6,7 +6,7 @@
 #include "../include/Connect.h"
 
 using namespace std;
-
+ 
 int main() {
 	srand((unsigned)time(NULL));
 	Connect con;

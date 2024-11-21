@@ -6,7 +6,6 @@
 #include <codecvt>
 #include <sstream>
 #include <iomanip>
-#include "ClientInfoBlock.h"
 
 constexpr auto COUNTRY_NAME_MAX_LEN = 80;
 

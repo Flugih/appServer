@@ -6,9 +6,6 @@
 #include <WS2tcpip.h>
 #include <map>
 
-#include "ClientInfo.h"
-#include "Serialization.h"
-
 #define WIN32_LEAN_AND_MEAN
 #pragma comment(lib, "WS2_32.lib")
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
@@ -18,17 +15,11 @@ using namespace std;
 
 class Connect {
 private:
-	SOCKET connectSocket = INVALID_SOCKET;
-
 	void tryAgain();
 
-	void sendInfo() const;
-
 public:
-	// SOCKET connectSocket = INVALID_SOCKET;
-
 	void client();
-	SOCKET getSocket();
+	SOCKET getSocket() const;
 
 };
 
